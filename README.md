@@ -13,7 +13,9 @@ you need a playaccount from https://playfab.com/
 
 ### Installing
 
-download the project and import to own project.
+Download the project and import to own project.
+Download Download [PlayFab SDK](https://api.playfab.com/sdks/unity)
+Import [PlayFab SDK](https://api.playfab.com/sdks/unity) to your project.
 
 
 
