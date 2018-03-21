@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TitleID: 7B38
+  CATALOG_VERIONS: 1
   m_CustomId: 8fa79815413d472d
 --- !u!4 &729676049
 Transform:

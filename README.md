@@ -23,7 +23,8 @@ Import [PlayFab SDK](https://api.playfab.com/sdks/unity) to your project.
 
 To test the project, open test scene from PlayfabUtilities/Test/Scenes/test.scene
 
-put required information to run the test from unity editor
+put required information to run the test from unity editor.
+Title ID,
 
 ### Break down into end to end tests
 
