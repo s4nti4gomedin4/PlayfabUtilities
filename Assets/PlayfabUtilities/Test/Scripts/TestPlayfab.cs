@@ -8,34 +8,18 @@ using UnityEngine;
 
 public class TestPlayfab : MonoBehaviour {
 
-    public string m_TitleID;
+
     public string CATALOG_VERIONS;
+    public TestLogin m_TestLogin;
 
-    [Header("LoginWithCustomID")]
-    public string m_CustomId;
-
-	public void Start()
+	private void Start()
 	{
-        TestConnect();
-
+        if(m_TestLogin!=null){
+            m_TestLogin.onLoginResultAction += GetUserInventory;
+        }
 	}
-	
-    public void TestConnect(){
-        LoginWithCustomIDRequest request = new LoginWithCustomIDRequest
-        {
-            CustomId = m_CustomId,
-            TitleId = m_TitleID,
-            CreateAccount = true
-        };
-        PlayFabClientAPI.LoginWithCustomID(request, ResultcallBack, ErroCallBAck);
-    }
-    public void ResultcallBack(LoginResult _LoginResult){
-        Debug.Log("Login success");
-        GetUserInventory();
-        //GetCatalog();
-    }
-   
-    public void GetCatalog()
+
+	public void GetCatalog()
     {
 
         GetCatalogItemsRequest request = new GetCatalogItemsRequest();
@@ -48,7 +32,7 @@ public class TestPlayfab : MonoBehaviour {
     {
         for (int i = 0; i < _result.Catalog.Count; i++)
         {
-            Debug.Log(PrintCatalogItem(_result.Catalog[i]));
+            Debug.Log(TestUtilities.PrintCatalogItem(_result.Catalog[i]));
             
         }
         if(_result.Catalog.Count>0){
@@ -57,24 +41,9 @@ public class TestPlayfab : MonoBehaviour {
 
        
     }
-    public string PrintCatalogItem(CatalogItem item){
-        return string.Format("item id: {0} - DisplayName: {1} - {2}", item.ItemId,item.DisplayName, GetVirtualCurrency(item.VirtualCurrencyPrices));
-    }
-    public string PrintItemInstance(ItemInstance item)
-    {
-        return string.Format("item id: {0} - DisplayName: {1} - PurchaseDate: {2} - UnitCurrency: {3} - UnitPrice: {4} ", item.ItemId, item.DisplayName, item.PurchaseDate,item.UnitCurrency,item.UnitPrice);
-    }
+   
 
-    private string GetVirtualCurrency<T>(Dictionary<string, T> virtualCurrencyPrices)
-    {
-        var sb = new StringBuilder(virtualCurrencyPrices.Count);
-        foreach (KeyValuePair<string, T> entry in virtualCurrencyPrices)
-        {
-            // do something with entry.Value or entry.Key
-            sb.Append(string.Format("[currency: {0} - price: {1}]",entry.Key,entry.Value));
-        }
-        return sb.ToString();
-    }
+
 
 
     private void PruchaseItem(CatalogItem item)
@@ -93,14 +62,14 @@ public class TestPlayfab : MonoBehaviour {
         request.Price = firstValue;
         request.CatalogVersion = CATALOG_VERIONS;
         PlayFabClientAPI.PurchaseItem(request, PurchaseResultCallBack, ErroCallBAck);
-        Debug.Log(string.Format("PruchaseItem {0}",PrintCatalogItem(item)));
+        Debug.Log(string.Format("PruchaseItem {0}",TestUtilities.PrintCatalogItem(item)));
     }
 
     private void PurchaseResultCallBack(PurchaseItemResult _result)
     {
         for (int i = 0; i < _result.Items.Count; i++)
         {
-            Debug.Log(string.Format("PruchaseItem success {0}", PrintItemInstance(_result.Items[i])));
+            Debug.Log(string.Format("PruchaseItem success {0}", TestUtilities.PrintItemInstance(_result.Items[i])));
         }
 
     }
@@ -114,9 +83,9 @@ public class TestPlayfab : MonoBehaviour {
         Debug.Log("GetUserInvetoryResult: ");
         for (int i = 0; i < _result.Inventory.Count; i++)
         {
-            Debug.Log(string.Format("Item id: {0} - ItemInstanceId: {1} - PurchaseDate: {2} - CatalogVersion: {3} - DisplayName: {4} - UnitCurrency: {5} - UnitPrice: {6} -",_result.Inventory[i].ItemId,_result.Inventory[i].ItemInstanceId,_result.Inventory[i].PurchaseDate,_result.Inventory[i].CatalogVersion,_result.Inventory[i].DisplayName,_result.Inventory[i].UnitCurrency,_result.Inventory[i].UnitPrice));
+            Debug.Log(TestUtilities.PrintItemInstance2(_result.Inventory[i]));
         }
-        Debug.Log(string.Format("Virtual currency: {0}", GetVirtualCurrency(_result.VirtualCurrency)));
+        Debug.Log(string.Format("Virtual currency: {0}", TestUtilities.GetVirtualCurrency(_result.VirtualCurrency)));
     }
 
   
